@@ -1,3 +1,5 @@
+Assignment submitted by Atul Gupta (samatul@gmail.com), Gaurav Patel (gaurav4664@gmail.com) and Ashutosh Panda(ashusai.panda@gmail.com).
+
 <br><b>Training logs</b></br>
 
 <img src="Capture.JPG"  height="320" width="520">
