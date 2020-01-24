@@ -1,8 +1,8 @@
 <br><b>Training logs</b></br>
 
-<img src="/Capture.JPG"  height="320" width="520">
+<img src="Capture.JPG"  height="320" width="520">
 
-<img src="/Capture1.JPG"  height="320" width="520">
+<img src="Capture1.JPG"  height="320" width="520">
 
 
 
@@ -10,4 +10,4 @@
 
 
 
-<img src="/CaptureAcu.JPG"  height="220" width="520">
+<img src="CaptureAcu.JPG"  height="220" width="520">
