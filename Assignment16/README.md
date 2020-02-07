@@ -17,4 +17,7 @@ Ashutosh Panda (ashusai.panda@gmail.com)
 
 In this assignment code,We used yolo trained weights to detect Cat Images from Cat video.
 In the below Youtube link we have uploaded the video in which cat images are being detected from video.
+
 https://youtu.be/THiM7_LKFR0
+
+The Data folder Contains 200 original and annotated cat images.
