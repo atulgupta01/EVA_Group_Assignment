@@ -15,9 +15,9 @@ Ashutosh Panda (ashusai.panda@gmail.com)
 
 **EVA_Assignment17.ipynb**
 
-In this assignment code,We used masked RCNN trained weights for masking Cat Images from Cat video.
+In this assignment code,We used masked RCNN trained weights.
 
-In the below Youtube link we have uploaded the video in which masked cat image are there.
+In the below Youtube link we have uploaded the video in which masked images are there.
 
 https://www.youtube.com/watch?v=0zu9GXaq-Js&feature=youtu.be
 
