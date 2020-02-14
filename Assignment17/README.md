@@ -13,7 +13,7 @@ Ashutosh Panda (ashusai.panda@gmail.com)
 
 ## Files
 
-**EVA_Assignment17.ipynb**
+**EVA_Assignment_17.ipynb**
 
 In this assignment code,We used masked RCNN trained weights.
 
