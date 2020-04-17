@@ -29,6 +29,7 @@ Ashutosh Panda (ashusai.panda@gmail.com)
 ## Files
 
 **EVAP2S5_PyTorch.ipynb**
+
 The Designed model has 14,848 parameters. Image random rotation is used for data augmentation. For model training stepLR strategy has been used. It is able to achieve test accuracy of 99.33% in 8 epoch itself. Colab file can also be found [here](https://colab.research.google.com/drive/13OW_xD-tpx5MVXBvPlYG4lxT3pE6mEAm).
 
 
