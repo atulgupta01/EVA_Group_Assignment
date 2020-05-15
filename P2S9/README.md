@@ -9,6 +9,15 @@
         1. read me must explain each part of the code
         2. each part of the code must be accompanied with a drawing/image (you cannot use the images from the course content)
     3. Upload the link.
+---
+
+## Group Members
+
+Atul Gupta (samatul@gmail.com)
+
+Gaurav Patel (gaurav4664@gmail.com)
+
+Ashutosh Panda (ashusai.panda@gmail.com)
 
 ---
 ## **Twin Delayed DDPG (TD3)**
