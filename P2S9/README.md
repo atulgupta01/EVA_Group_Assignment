@@ -252,7 +252,7 @@ For each of the iterations, sample a batch of size *batch_size* from ReplayBuffe
 Generate actions for next_states through Actor Target.  
 
     next_action = self.actor_target(next_state)
-It must be noted here that *next_state* here corresponds to entire batch of next states obtained by sampling the ReplayBuffer in the previous step. Also we are using the Actor Target and not Actor Model. In TD3 algorithm for acting purpose Actor Model is used while for equation calculations Actor Model is used. *next_action* obtained here will be used in calculation of Q-Values.
+It must be noted here that *next_state* here corresponds to entire batch of next states obtained by sampling the ReplayBuffer in the previous step. Also we are using the Actor Target and not Actor Model. In TD3 algorithm for acting purpose Actor Model is used while for equation calculations Actor Target is used. *next_action* obtained here will be used in calculation of Q-Values.
 
 ### Step 6: Add noise to predicted actions
 ![Step6_AddNoise](https://github.com/atulgupta01/EVA_Group_Assignment/blob/master/P2S9/Figures/Step6_AddNoise.png)
