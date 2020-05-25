@@ -75,7 +75,7 @@ Import all the necessary packages and libraries.
           batch_dones.append(np.array(done, copy=False))
         return np.array(batch_states), np.array(batch_next_states), np.array(batch_actions), np.array(batch_rewards).reshape(-1, 1), np.array(batch_dones).reshape(-1, 1)
 
-Object of this class will be used to store the experiences of the agent while acting in the environment. It stores each experience as a tuple **<state, next_state, action, reward,done>**. Its size will be specified as **max_size** at the time of its instance creation.
+Object of this class will be used to store the experiences of the agent while acting in the environment. It stores each experience as a tuple **<state, next_state, action, reward, done>**. Its size will be specified as **max_size** at the time of its instance creation.
 
 To utilize this class following methods are defined.
 
