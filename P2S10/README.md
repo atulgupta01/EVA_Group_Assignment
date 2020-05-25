@@ -20,14 +20,20 @@
     
     e. episodes & reset: If you check the codes shared with us, we have episodes. Eg. in case of walker2d if the walker falls down episode ends and env.step() returns done as True. We should also have similar episode system for endgame assignment. eg. car gets onto sand and doesn't come out for say 100 steps or car is stuck to the wall for say 50 steps we can end the episode. We must also have a reset() method which will reset car to on location which on road.
     
-2. TD3 design:
+2. TD3 design:  
+
     a. states selection: We must figure out what states to feed into TD3 networks. Rohan gave some hints in the lecture. We can take current frame and distance to target as state. 
-    b. state representation: Rohan said we can have a crop of say 80x80 out of MASK1.png with car location as center of crop. Over this crop we can plot some kind of arrow or any minimalistic representation to indicate car's rotation (which way car is facing). He also said that since MASK1.png has only two values we can represent state using a boolean numpy array with say True representing road and False representing sand. Doing this will save lots of space and training will also be fast. We will have to figure out what works for us.
-    c. action space: This seems to be straight forward. Rohan clearly mentioned in lecture that taking angle as action is good enough. So we can take 1D action representing angle. This will have continuous float value. We will have to decide max_action also which we can set to 3 or 5 degrees.
-    d. model selection: Rohan said any simple model which can achieve upto 99% accuracy on MNIST should be good. 
+    
+    b. state representation: Rohan said we can have a crop of say 80x80 out of MASK1.png with car location as center of crop. Over this crop we can plot some kind of arrow or any minimalistic representation to indicate car's rotation (which way car is facing). He also said that since MASK1.png has only two values we can represent state using a boolean numpy array with say True representing road and False representing sand. Doing this will save lots of space and training will also be fast. We will have to figure out what works for us.  
+    
+    c. action space: This seems to be straight forward. Rohan clearly mentioned in lecture that taking angle as action is good enough. So we can take 1D action representing angle. This will have continuous float value. We will have to decide max_action also which we can set to 3 or 5 degrees.  
+    
+    d. model selection: Rohan said any simple model which can achieve upto 99% accuracy on MNIST should be good.  
+    
 3. Miscellaneous:  
     
-    a. Video creation: final output video
+    a. Video creation: final output video  
+    
     b. Model inference : No training just evaluation
 
 
