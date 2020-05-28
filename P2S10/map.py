@@ -259,12 +259,12 @@ class env(object):
         self.last_distance = distance
         self.current_step += 1
     
-        img_crop = self.city.get_current_loc_map(self.car.x, self.car.y,
-                self.car.angle, state=True)
+        _, img_crop = self.city.get_current_loc_map(self.car.x, self.car.y,
+                self.size, self.car.angle, state=True)
         self.last_action = action
         self.last_reward = self.reward
     
-        return (img_crop, self.reward, done)
+        return img_crop, self.reward, done
 
     def reset(self):
 
