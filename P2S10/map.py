@@ -128,7 +128,7 @@ class city(object):
         img_crop = newcity_img[int(y - size / 2):int(y) + int(size / 2), int(x
                                - size / 2):int(x) + int(size / 2)]
         img_state = np.average(img_crop, axis=2) / 255
-        img_state = img_state.reshape(size, size, -1)
+        img_state = img_state.reshape(-1, size, size)
         return (img_crop, img_state)
 
 
@@ -147,7 +147,7 @@ class env(object):
         self.car_img = car_img
         self.car_img = cv.resize(self.car_img, (self.car.length,
                                  self.car.width))
-        self.size = 80
+        self.size = 40
 
     # car_x and car_y are center points of the car
 
@@ -265,7 +265,7 @@ class env(object):
         self.last_action = action
         self.last_reward = self.reward
     
-        return img_state, self.reward, done
+        return [img_state, distance], self.reward, done
 
     def reset(self):
 
@@ -289,8 +289,10 @@ class env(object):
         self.car.angle = 0.0
         self.car.x = np.random.randint(100, longueur - 100)
         self.car.y = np.random.randint(100, largeur - 100)
+        distance = np.sqrt((self.car.x - self.goal_x) ** 2 + (self.car.y
+                           - self.goal_y) ** 2)
         
         _, img_state = self.city.get_current_loc_map(self.car.x, self.car.y,
                 self.size, self.car.angle, state=True)
-        return [img_state, self.car.angle]
+        return [img_state, distance]
 
