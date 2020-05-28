@@ -289,4 +289,8 @@ class env(object):
         self.car.angle = 0.0
         self.car.x = np.random.randint(100, longueur - 100)
         self.car.y = np.random.randint(100, largeur - 100)
+        
+        _, img_state = self.city.get_current_loc_map(self.car.x, self.car.y,
+                self.size, self.car.angle, state=True)
+        return [img_state, self.car.angle]
 
