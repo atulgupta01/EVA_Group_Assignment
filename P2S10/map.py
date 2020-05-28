@@ -128,6 +128,7 @@ class city(object):
         img_crop = newcity_img[int(y - size / 2):int(y) + int(size / 2), int(x
                                - size / 2):int(x) + int(size / 2)]
         img_state = np.average(img_crop, axis=2) / 255
+        img_state = img_state.reshape(size, size, -1)
         return (img_crop, img_state)
 
 
@@ -259,12 +260,12 @@ class env(object):
         self.last_distance = distance
         self.current_step += 1
     
-        _, img_crop = self.city.get_current_loc_map(self.car.x, self.car.y,
+        _, img_state = self.city.get_current_loc_map(self.car.x, self.car.y,
                 self.size, self.car.angle, state=True)
         self.last_action = action
         self.last_reward = self.reward
     
-        return img_crop, self.reward, done
+        return img_state, self.reward, done
 
     def reset(self):
 
