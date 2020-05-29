@@ -146,6 +146,10 @@ class env(object):
         self.goal_x = 575
         self.goal_y = 530
         self.swap = 0
+        self._max_episode_steps = 10
+        self.max_action = 10
+        self.refVelX = 1.0
+        self.refVelY = 0.0
 
     # car_x and car_y are center points of the car
 
@@ -175,15 +179,15 @@ class env(object):
 
     def step(self, action):
         self.reward = 0
-        self.velocity_x = 0.5
-        self.velocity_y = 0.5
         done = False
 
-        angle = math.radians(action)
-        self.velocity_x = self.velocity_x * math.cos(angle) \
-            - self.velocity_y * math.sin(angle)
-        self.velocity_y = self.velocity_y * math.cos(angle) \
-            + self.velocity_x * math.sin(angle)
+        new_action = self.car.angle + action
+        
+        angle = math.radians(new_action)
+        self.velocity_x = self.refVelX * math.cos(angle) \
+            - self.refVelY * math.sin(angle)
+        self.velocity_y = self.refVelY * math.cos(angle) \
+            + self.refVelX * math.sin(angle)
         self.car.move(self.velocity_x, self.velocity_y, action)
         #xx = self.goal_x - self.car.x
         #yy = self.goal_y - self.car.y
@@ -221,7 +225,7 @@ class env(object):
         if distance < self.last_distance:
             self.reward = self.reward + 5
         else:
-            self.reward = self.reward + 2
+            self.reward = self.reward - 2
     
         if distance < 25:
             self.reward = self.reward + 100
@@ -296,4 +300,8 @@ class env(object):
         _, img_state = self.city.get_current_loc_map(self.car.x, self.car.y,
                 self.size, self.car.angle, state=True)
         return [img_state, distance]
+    
+    def sample_action(self):
+        return int(np.random.randint(0, self.max_action))
+        
 

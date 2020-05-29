@@ -361,18 +361,19 @@ class TD3(object):
 
       # Step 4: We sample a batch of transitions (s, s’, a, r) from the memory
 
-            (batch_states, batch_next_states, batch_actions,
-             batch_rewards, batch_dones) = \
-                replay_buffer.sample(batch_size)
-            state = torch.Tensor(batch_states).to(device)
-            next_state = torch.Tensor(batch_next_states).to(device)
+            (batch_stateImgs, batch_stateValues, batch_next_stateImgs, batch_next_stateValues,\
+             batch_actions, batch_rewards, batch_dones) = replay_buffer.sample(batch_size)
+            stateImg = torch.Tensor(batch_stateImgs).to(device)
+            stateValues = torch.Tensor(batch_stateValues).to(device)
+            next_stateImgs = torch.Tensor(batch_next_stateImgs).to(device)
+            next_stateValues = torch.Tensor(batch_next_stateValues).to(device)
             action = torch.Tensor(batch_actions).to(device)
             reward = torch.Tensor(batch_rewards).to(device)
             done = torch.Tensor(batch_dones).to(device)
 
       # Step 5: From the next state s’, the Actor target plays the next action a’
 
-            next_action = self.actor_target(next_state)
+            next_action = self.actor_target(stateImg, stateValues)
 
       # Step 6: We add Gaussian noise to this next action a’ and we clamp it in a range of values supported by the environment
 
@@ -384,8 +385,7 @@ class TD3(object):
 
       # Step 7: The two Critic targets take each the couple (s’, a’) as input and return two Q-values Qt1(s’,a’) and Qt2(s’,a’) as outputs
 
-            (target_Q1, target_Q2) = self.critic_target(next_state,
-                    next_action)
+            (target_Q1, target_Q2) = self.critic_target(next_stateImgs, next_stateValues, next_action)
 
       # Step 8: We keep the minimum of these two Q-values: min(Qt1, Qt2)
 
@@ -398,7 +398,7 @@ class TD3(object):
 
       # Step 10: The two Critic models take each the couple (s, a) as input and return two Q-values Q1(s,a) and Q2(s,a) as outputs
 
-            (current_Q1, current_Q2) = self.critic(state, action)
+            (current_Q1, current_Q2) = self.critic(stateImg, stateValues, action)
 
       # Step 11: We compute the loss coming from the two Critic models: Critic Loss = MSE_Loss(Q1(s,a), Qt) + MSE_Loss(Q2(s,a), Qt)
 
@@ -414,8 +414,8 @@ class TD3(object):
       # Step 13: Once every two iterations, we update our Actor model by performing gradient ascent on the output of the first Critic model
 
             if it % policy_freq == 0:
-                actor_loss = -self.critic.Q1(state,
-                        self.actor(state)).mean()
+                actor_loss = -self.critic.Q1(stateImg, stateValues,
+                        self.actor(stateImg, stateValues)).mean()
                 self.actor_optimizer.zero_grad()
                 actor_loss.backward()
                 self.actor_optimizer.step()
