@@ -8,16 +8,7 @@ Created on Wed May 27 21:40:40 2020
 """
 
 import cv2 as cv
-from google.colab.patches import cv2_imshow
-from PIL import Image
-from scipy import ndimage
-import copy
-from PIL import Image as PILImage
-import numpy as np
-import math
-
-import cv2 as cv
-from google.colab.patches import cv2_imshow
+#from google.colab.patches import cv2_imshow
 from PIL import Image
 from scipy import ndimage
 import copy
@@ -108,12 +99,14 @@ class city(object):
         ):
 
         newcity_img = copy.deepcopy(self.city_img)
-
+        
         if x - size / 2 < 0 or y - size / 2 < 0 or x + size / 2 \
             > self.length - 1 or y + size / 2 > self.width - 1:
-            return np.ones((size, size, 3))
+            return np.ones((size, size, 3)), np.ones((1, size, size))
         else:
             y = self.width - y
+        
+        
 
         if state == True:
             img_crop = self.draw_car(
@@ -124,12 +117,14 @@ class city(object):
                 angle,
                 newcity_img,
                 )
+        
 
         img_crop = newcity_img[int(y - size / 2):int(y) + int(size / 2), int(x
                                - size / 2):int(x) + int(size / 2)]
         img_state = np.average(img_crop, axis=2) / 255
         img_state = img_state.reshape(-1, size, size)
-        return (img_crop, img_state)
+        
+        return img_crop, img_state
 
 
 class env(object):
@@ -148,6 +143,9 @@ class env(object):
         self.car_img = cv.resize(self.car_img, (self.car.length,
                                  self.car.width))
         self.size = 40
+        self.goal_x = 575
+        self.goal_y = 530
+        self.swap = 0
 
     # car_x and car_y are center points of the car
 
@@ -178,7 +176,7 @@ class env(object):
     def step(self, action):
         self.reward = 0
         self.velocity_x = 0.5
-        self.velocity_y = 0
+        self.velocity_y = 0.5
         done = False
 
         angle = math.radians(action)
@@ -187,14 +185,14 @@ class env(object):
         self.velocity_y = self.velocity_y * math.cos(angle) \
             + self.velocity_x * math.sin(angle)
         self.car.move(self.velocity_x, self.velocity_y, action)
-        xx = self.goal_x - self.car.x
-        yy = self.goal_y - self.car.y
+        #xx = self.goal_x - self.car.x
+        #yy = self.goal_y - self.car.y
 
         distance = np.sqrt((self.car.x - self.goal_x) ** 2 + (self.car.y
                            - self.goal_y) ** 2)
     
-        car_loc, _ = self.city_map.get_current_loc_map(self.car.x,
-                              self.car.y, self.size)
+        car_loc, img_state = self.city.get_current_loc_map(self.car.x, self.car.y, self.size, self.car.angle, state=True)
+        
         sand_quality = np.sum(car_loc)
         sand_quality = sand_quality / (self.size * self.size * 3 * 255)
     
@@ -205,7 +203,7 @@ class env(object):
                             - self.car.y), int(self.car.x)]) / (255 * 3)
     
         if sand_check > 0:  # **** Check whether coords are correct
-            self.reward = self.reward - 5.0
+            self.reward = self.reward + 5.0
         else:
     
                # moving on the road
@@ -214,8 +212,8 @@ class env(object):
     
         if self.car.x - int(self.car.length / 2) < 5 or self.car.y \
             - int(self.car.width / 2) < 5 or self.car.x \
-            - int(self.car.length / 2) > self.city_map.length - 5 \
-            or self.car.y - int(self.car.width / 2) > self.city_map.width \
+            + int(self.car.length / 2) > self.city_map.length - 5 \
+            or self.car.y + int(self.car.width / 2) > self.city_map.width \
             - 5:
             self.boundary_hit_count = self.boundary_hit_count + 1
             self.reward = self.reward - 5.0
@@ -231,27 +229,27 @@ class env(object):
             self.goal_hit_count += 1
     
             if swap == 1:
-                print ('Hit the Goal 2: (' + str(goal_x) + ', ' \
-                    + str(goal_y) + ')')
-                traversal_log.write('Train episode: '
-                                    + str(train_episode_num)
-                                    + ' Eval episode: '
-                                    + str(eval_episode_num)
-                                    + ' : Hit the Goal 2: (' + str(goal_x)
-                                    + ', ' + str(goal_y) + ')\n')
+                print ('Hit the Goal 2: (' + str(self.goal_x) + ', ' \
+                    + str(self.goal_y) + ')')
+                #traversal_log.write('Train episode: '
+                #                    + str(train_episode_num)
+                #                    + ' Eval episode: '
+                #                    + str(eval_episode_num)
+                #                    + ' : Hit the Goal 2: (' + str(goal_x)
+                #                    + ', ' + str(goal_y) + ')\n')
                 self.goal_x = 575
                 self.goal_y = 530
                 self.swap = 0
                 done = True
             else:
-                print ('Hit the Goal 1: (' + str(goal_x) + ', ' \
-                    + str(goal_y) + ')')
-                traversal_log.write('Train episode: '
-                                    + str(train_episode_num)
-                                    + ' Eval episode: '
-                                    + str(eval_episode_num)
-                                    + ' : Hit the Goal 1: (' + str(goal_x)
-                                    + ', ' + str(goal_y) + ')\n')
+                print ('Hit the Goal 1: (' + str(self.goal_x) + ', ' \
+                    + str(self.goal_y) + ')')
+                #traversal_log.write('Train episode: '
+                #                    + str(train_episode_num)
+                #                    + ' Eval episode: '
+                #                    + str(eval_episode_num)
+                #                    + ' : Hit the Goal 1: (' + str(goal_x)
+                #                    + ', ' + str(goal_y) + ')\n')
                 self.goal_x = 610
                 self.goal_y = 45
                 self.swap = 1
@@ -260,10 +258,13 @@ class env(object):
         self.last_distance = distance
         self.current_step += 1
     
-        _, img_state = self.city.get_current_loc_map(self.car.x, self.car.y,
-                self.size, self.car.angle, state=True)
+        #_, img_state = self.city.get_current_loc_map(self.car.x, self.car.y,
+        #        self.size, self.car.angle, state=True)
         self.last_action = action
         self.last_reward = self.reward
+        
+        if (self.boundary_hit_count == 5):
+            done = True
     
         return [img_state, distance], self.reward, done
 
